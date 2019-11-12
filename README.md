@@ -2,7 +2,7 @@
 
 Provides access to the POSIX terminal functions, e.g. `tcgetpgrp` and `tcsetpgrp`.
 
-[![Build Status](https://secure.travis-ci.org/socketry/process-terminal.svg)](http://travis-ci.org/socketry/process-terminal)
+[![Build Status](https://secure.travis-ci.com/socketry/process-terminal.svg)](http://travis-ci.com/socketry/process-terminal)
 [![Actions Status](https://github.com/socketry/process-terminal/workflows/Tests/badge.svg)](https://github.com/socketry/process-terminal/actions?workflow=Tests)
 
 ## Installation
