@@ -23,7 +23,7 @@ require_relative 'unistd'
 module Process
 	module Terminal
 		class Device
-			# Attempts to open the current tty.
+			# Attempts to open the current TTY. Prefer `.new?` if possible.
 			# @returns [Device | nil] the terminal device if the file was readable.
 			def self.open(path = "/dev/tty", mode = "r+")
 				if File.readable?(path)
@@ -31,14 +31,15 @@ module Process
 				end
 			end
 			
-			def initialize(io)
-				@io = io
+			# Create a new device instance, but only if the supplied IO is a TTY.
+			def self.new?(io = STDIN)
+				if io.tty?
+					self.new(io)
+				end
 			end
 			
-			# Close the underlying IO. After this, the device will be unusable.
-			def close
-				@io.close
-				@io = nil
+			def initialize(io = STDIN)
+				@io = io
 			end
 			
 			# Make the specified pid the foreground processs in the current terminal.
@@ -51,8 +52,6 @@ module Process
 				if result == -1
 					raise SystemCallError.new('tcsetpgrp', FFI.errno)
 				end
-				
-				return result
 			ensure
 				Signal.trap(:SIGTTOU, current) if current
 			end
