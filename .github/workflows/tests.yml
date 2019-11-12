@@ -4,17 +4,33 @@ on: [push]
 
 jobs:
   build:
-    
-    runs-on: ubuntu-latest
-    
     strategy:
       matrix:
-        ruby-version: ['2.3', '2.4', '2.5', '2.6']
+        os:
+          - ubuntu
+          - macos
+        
+        ruby:
+          - 2.3
+          - 2.4
+          - 2.5
+          - 2.6
+        
+        include:
+          - os: 'ubuntu'
+            ruby: '2.6'
+            env: COVERAGE=PartialSummary,Coveralls
+    
+    runs-on: ${{matrix.os}}-latest
     
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-ruby@v1
       with:
-        ruby-version: ${{matrix.ruby-version}}
+        ruby-version: ${{matrix.ruby}}
+    - name: Install dependencies
+      run: |
+        command -v bundler || gem install bundler
+        bundle install
     - name: Run tests
-      run: bundle exec rspec
+      run: ${{matrix.env}} bundle exec rspec

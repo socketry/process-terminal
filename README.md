@@ -2,6 +2,8 @@
 
 Provides access to the POSIX terminal functions, e.g. `tcgetpgrp` and `tcsetpgrp`.
 
+[![Actions Status](https://github.com/socketry/process-terminal/workflows/Tests/badge.svg)](https://github.com/socketry/process-terminal/actions?workflow=Tests)
+
 ## Installation
 
 Add this line to your application's Gemfile:
