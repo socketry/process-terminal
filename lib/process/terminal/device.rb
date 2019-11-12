@@ -23,8 +23,12 @@ require_relative 'unistd'
 module Process
 	module Terminal
 		class Device
+			# Attempts to open the current tty.
+			# @returns [Device | nil] the terminal device if the file was readable.
 			def self.open(path = "/dev/tty", mode = "r+")
-				self.new(File.open(path, mode))
+				if File.readable?(path)
+					self.new(File.open(path, mode))
+				end
 			end
 			
 			def initialize(io)

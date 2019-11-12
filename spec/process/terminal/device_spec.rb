@@ -23,8 +23,22 @@ require "process/terminal/device"
 RSpec.describe Process::Terminal::Device do
 	subject {Process::Terminal::Device.open}
 	
+	describe '.open' do
+		it "can open default tty" do
+			expect(subject).to_not be_nil
+		end
+		
+		context "with invalid path" do
+			subject {Process::Terminal::Device.open("does/not/exist")}
+			
+			it "does not open tty" do
+				expect(subject).to be_nil
+			end
+		end
+	end
+	
 	it "can set foreground process" do
-		process = IO.popen("-", pgroup: true)
+		process = IO.popen("irb", pgroup: true)
 		subject.foreground = process.pid
 		
 		expect(subject.foreground).to be == process.pid
