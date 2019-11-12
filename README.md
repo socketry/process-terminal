@@ -22,6 +22,8 @@ Or install it yourself as:
 
 ## Usage
 
+You can change the current foreground process for the current terminal:
+
 ```ruby
 device = Process::Terminal::Device.open
 
