@@ -38,12 +38,13 @@ RSpec.describe Process::Terminal::Device do
 	end
 	
 	it "can set foreground process" do
-		process = IO.popen("irb", pgroup: true)
-		subject.foreground = process.pid
+		pid = Process.spawn("irb", pgroup: true)
 		
-		expect(subject.foreground).to be == process.pid
+		subject.foreground = pid
 		
-		Process.kill(:TERM, process.pid)
-		Process.waitpid(process.pid)
+		expect(subject.foreground).to be == pid
+		
+		Process.kill(:TERM, pid)
+		Process.waitpid(pid)
 	end
 end

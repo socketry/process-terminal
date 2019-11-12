@@ -46,14 +46,26 @@ module Process
 			def foreground=(pid)
 				current = Signal.trap(:SIGTTOU, :IGNORE)
 				
-				Unistd.tcsetpgrp(@io.fileno, pid)
+				result = Unistd.tcsetpgrp(@io.fileno, pid)
+				
+				if result == -1
+					raise SystemCallError.new('tcsetpgrp', FFI.errno)
+				end
+				
+				return result
 			ensure
 				Signal.trap(:SIGTTOU, current) if current
 			end
 			
 			# @return [Integer] the foreground process group.
 			def foreground
-				Unistd.tcgetpgrp(@io.fileno)
+				result = Unistd.tcgetpgrp(@io.fileno)
+				
+				if result == -1
+					raise SystemCallError.new('tcgetpgrp', FFI.errno)
+				end
+				
+				return result
 			end
 		end
 	end
