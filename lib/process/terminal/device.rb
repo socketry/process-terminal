@@ -35,6 +35,7 @@ module Process
 				@io = io
 			end
 			
+			# Close the underlying IO. After this, the device will be unusable.
 			def close
 				@io.close
 				@io = nil
